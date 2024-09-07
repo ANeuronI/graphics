@@ -87,15 +87,15 @@ def neural_voxel_renderer_plus(voxels,
                                light_pos,
                                voxel_size,
                                image_size,
-                               size=4,
-                               norm2d='batchnorm',
-                               norm3d='batchnorm'):
+                               size=None,
+                               norm2d=None,
+                               norm3d=None):
   """Neural Voxel Renderer + keras model."""
   with tf.name_scope('Network/'):
 
-    voxels = layers.Input(shape=(voxel_size, voxel_size, voxel_size, 4), tensor=voxels)
-    rerendering = layers.Input(shape=(image_size, image_size, 3), tensor=rerendering)
-    light_pos = layers.Input(shape=(3,), tensor=light_pos)
+    voxels = layers.Input(shape=(voxel_size, voxel_size, voxel_size, 4), name='voxels_input')
+    rerendering = layers.Input(shape=(image_size, image_size, 3), name='rerender_input')
+    light_pos = layers.Input(shape=(3,), name='light_input')
     nf_2d = 512
 
     with tf.name_scope('VoxelProcessing'):
