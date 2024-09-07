@@ -94,14 +94,18 @@ def neural_voxel_renderer_plus(voxels,
         # Use explicit shapes for Input layers
         VOXEL_SIZE = 128
         IMAGE_SIZE = 256
+
         # Define Input layers with specified shapes
-        voxels_input = layers.Input(shape=(None, VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE, 4), name='input_voxels')
-        rerendering_input = layers.Input(shape=(None, IMAGE_SIZE, IMAGE_SIZE, 3), name='input_rerendering')
-        light_pos_input = layers.Input(shape=(None, 3), name='input_light')
+        voxels_input = layers.Input(shape=(VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE, 4), name='input_voxels')
+        rerendering_input = layers.Input(shape=(IMAGE_SIZE, IMAGE_SIZE, 3), name='input_rerendering')
+        light_pos_input = layers.Input(shape=(3,), name='input_light')
 
         nf_2d = 512
         initializer = tf.keras.initializers.HeNormal()
+
+        # Ensure size is a tuple of 3 for Conv3D layers
         size = (3, 3, 3)
+
         # Process voxel inputs
         vol0_a = layer_utils.conv_block_3d(voxels_input,
                                            nfilters=16,
@@ -129,6 +133,7 @@ def neural_voxel_renderer_plus(voxels,
                                            strides=1,
                                            normalization=norm3d)  # 32x32x32x32
         shortcut = vol1_c
+
         vol_a1 = layer_utils.residual_block_3d(vol1_c,
                                                32,
                                                strides=(1, 1, 1),
@@ -159,7 +164,7 @@ def neural_voxel_renderer_plus(voxels,
         latent_projection = layers.LeakyReLU()(encoded_vol)  # 32x32x512
 
         # Process projection inputs
-        shortcut = latent_projection  # 32x32xnf_2d
+        shortcut = latent_projection
         e1 = layer_utils.residual_block_2d(latent_projection,
                                            nfilters=nf_2d,
                                            strides=(1, 1),

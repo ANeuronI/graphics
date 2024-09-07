@@ -45,25 +45,25 @@ def upconv(tensor, nfilters, size, strides,
 
 def conv_block_3d(tensor, nfilters, size, strides,
                   alpha_lrelu=0.2, normalization='None', relu=True):
-    """3D convolution block with normalization and leaky relu."""
-    
-    # Check if size is a tuple of spatial dimensions
-    if isinstance(size, int):
-        size = (size, size, size)
-    
-    tensor = layers.Conv3D(filters=nfilters, kernel_size=size,
+    """3D convolution block with normalization and leaky ReLU."""
+    tensor = layers.Conv3D(nfilters, size,
                            strides=strides,
                            padding='same',
                            kernel_initializer='he_normal',
                            use_bias=False)(tensor)
 
-    tensor = norm_layer(tensor, normalization)
+    # Apply normalization if specified
+    if normalization.lower() == 'batch':
+        tensor = layers.BatchNormalization()(tensor)
+    elif normalization.lower() == 'dropout':
+        tensor = layers.Dropout(rate=0.5)(tensor)  # Adjust rate as needed
 
+    # Apply Leaky ReLU activation if specified
     if relu:
         tensor = layers.LeakyReLU(alpha=alpha_lrelu)(tensor)
-    if normalization.lower() == 'dropout':
-        tensor = layers.Dropout(rate=0.5)(tensor)  # Adjust dropout rate as needed
+    
     return tensor
+
 
 
 def conv_t_block_3d(tensor, nfilters, size, strides,
