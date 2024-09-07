@@ -87,9 +87,9 @@ def neural_voxel_renderer_plus(voxels,
                                light_pos,
                                voxel_size,
                                image_size,
-                               size=None,
-                               norm2d=None,
-                               norm3d=None):
+                               size=4,
+                               norm2d='batchnorm',
+                               norm3d='batchnorm'):
   """Neural Voxel Renderer + keras model."""
   with tf.name_scope('Network/'):
 
