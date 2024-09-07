@@ -46,7 +46,12 @@ def upconv(tensor, nfilters, size, strides,
 def conv_block_3d(tensor, nfilters, size, strides,
                   alpha_lrelu=0.2, normalization='None', relu=True):
     """3D convolution block with normalization and leaky relu."""
-    tensor = layers.Conv3D(nfilters, size,
+    
+    # Check if size is a tuple of spatial dimensions
+    if isinstance(size, int):
+        size = (size, size, size)
+    
+    tensor = layers.Conv3D(filters=nfilters, kernel_size=size,
                            strides=strides,
                            padding='same',
                            kernel_initializer='he_normal',

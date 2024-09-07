@@ -85,7 +85,7 @@ def unet_3x_with_res_in_mid(feat_in, out_filters, norm2d):
 def neural_voxel_renderer_plus(voxels,
                                rerendering,
                                light_pos,
-                               size=3,
+                               size,
                                norm2d='batchnorm',
                                norm3d='batchnorm'):
     """Neural Voxel Renderer + keras model."""
@@ -101,7 +101,7 @@ def neural_voxel_renderer_plus(voxels,
 
         nf_2d = 512
         initializer = tf.keras.initializers.HeNormal()
-
+        size = (3, 3, 3)
         # Process voxel inputs
         vol0_a = layer_utils.conv_block_3d(voxels_input,
                                            nfilters=16,
