@@ -17,7 +17,7 @@ import tensorflow_graphics.projects.neural_voxel_renderer.layers as layer_utils
 
 initializer = tf.keras.initializers.glorot_normal()
 layers = tf.keras.layers
-models = tf.keras.models
+
 
 def unet_3x_with_res_in_mid(feat_in, out_filters, norm2d):
   """Helper function of a Unet with res blocks in the middle."""
@@ -258,7 +258,7 @@ def neural_voxel_renderer_plus(voxels,
                                       padding='same',
                                       activation='sigmoid')(d9)  # 256x256x3
 
-        return models.Model(inputs=[voxels_input, rerendering_input, light_pos_input],
+        return tf.keras.Model(inputs=[voxels_input, rerendering_input, light_pos_input],
                             outputs=decoded_image)
 
 
