@@ -85,7 +85,7 @@ def unet_3x_with_res_in_mid(feat_in, out_filters, norm2d):
 def neural_voxel_renderer_plus(voxels,
                                rerendering,
                                light_pos,
-                               size=4,
+                               size=3,
                                norm2d='batchnorm',
                                norm3d='batchnorm'):
     """Neural Voxel Renderer + keras model."""
