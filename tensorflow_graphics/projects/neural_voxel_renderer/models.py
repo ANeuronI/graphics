@@ -85,16 +85,17 @@ def unet_3x_with_res_in_mid(feat_in, out_filters, norm2d):
 def neural_voxel_renderer_plus(voxels,
                                rerendering,
                                light_pos,
+                               voxel_size,
+                               image_size,
                                size=4,
                                norm2d='batchnorm',
                                norm3d='batchnorm'):
   """Neural Voxel Renderer + keras model."""
   with tf.name_scope('Network/'):
 
-    voxels = layers.Input(tensor=voxels)
-    rerendering = layers.Input(tensor=rerendering)
-    light_pos = layers.Input(tensor=light_pos)
-
+    voxels = layers.Input(shape=(voxel_size, voxel_size, voxel_size, 4), tensor=voxels)
+    rerendering = layers.Input(shape=(image_size, image_size, 3), tensor=rerendering)
+    light_pos = layers.Input(shape=(3,), tensor=light_pos)
     nf_2d = 512
 
     with tf.name_scope('VoxelProcessing'):
