@@ -92,6 +92,8 @@ def neural_voxel_renderer_plus(voxels,
     with tf.name_scope('Network/'):
 
         # Use explicit shapes for Input layers
+        VOXEL_SIZE = 128
+        IMAGE_SIZE = 256
         voxels = layers.Input(tensor=voxels, shape=(None, VOXEL_SIZE, VOXEL_SIZE, VOXEL_SIZE, 4))
         rerendering = layers.Input(tensor=rerendering, shape=(None, IMAGE_SIZE, IMAGE_SIZE, 3))
         light_pos = layers.Input(tensor=light_pos, shape=(None, 3))
